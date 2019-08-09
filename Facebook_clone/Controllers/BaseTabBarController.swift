@@ -68,6 +68,8 @@ class BaseTabBarController: UITabBarController {
         
         //collections of controllers
         viewControllers = [timelineNavigationController, timelineNavigationController2, timelineNavigationController3, timelineNavigationController4, timelineNavigationController5, timelineNavigationController6, timelineNavigationController7]
+        
+        tabBar.isTranslucent = false
     }
 
 

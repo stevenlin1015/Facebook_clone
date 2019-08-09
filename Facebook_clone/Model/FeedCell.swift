@@ -15,14 +15,14 @@ class FeedCell: UICollectionViewCell {
             
             if let name = post?.name {
                 let attributedText = NSMutableAttributedString(string: name, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-                attributedText.append(NSAttributedString(string: "\nDecember 18 • San Francisco • ", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 97, green: 103, blue: 112)]))
+                attributedText.append(NSAttributedString(string: "\n昨天下午6:01 • 新北市 • ", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 97, green: 103, blue: 112)]))
                 
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.lineSpacing = 4
                 
                 attributedText.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedText.string.count))
                 
-                //加地球圖片
+                //貼文可見度icon
                 let attachment = NSTextAttachment()
                 attachment.image = UIImage(named: "timeline_facebook_earthicon_icon30x30_")
                 attachment.bounds = CGRect(x: 0, y: -2, width: 12, height: 12)
@@ -73,23 +73,24 @@ class FeedCell: UICollectionViewCell {
     let statusImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "DSC01887")
-        imageView.contentMode = UIView.ContentMode.scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFit
         imageView.layer.masksToBounds = true
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "profile")
-        imageView.contentMode = UIView.ContentMode.scaleAspectFit
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
     let likesCommentsLabel: UILabel = {
         let label = UILabel()
-        label.text = "488 Likes   10.7K Comments"
+        label.text = "7則留言  2次分享"
         label.textColor = UIColor.rgb(red: 97, green: 103, blue: 112)
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont.systemFont(ofSize: 14)
         return label
     }()
     //post和按鈕的分隔線(用UIView做)
@@ -100,9 +101,15 @@ class FeedCell: UICollectionViewCell {
     }()
     
     //buttons
-    let likeButton = FeedCell.setupButton(labelName: "Like", imageName: "timeline_facebook_like_icon50x50_")
-    let commentButton = FeedCell.setupButton(labelName: "Comment", imageName: "timeline_facebook_comment_icon50x50_")
-    let shareButton = FeedCell.setupButton(labelName: "Share", imageName: "timeline_facebook_share_icon50x50_")
+    let likeButton = FeedCell.setupButton(labelName: "讚", imageName: "timeline_facebook_like_icon50x50_")
+    let commentButton = FeedCell.setupButton(labelName: "留言", imageName: "timeline_facebook_comment_icon50x50_")
+    let shareButton = FeedCell.setupButton(labelName: "分享", imageName: "timeline_facebook_share_icon50x50_")
+    let postMoreButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "timeline_facebook_moreinfo_icon_40x40_"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
     static func setupButton(labelName: String, imageName: String) -> UIButton {
         let button = UIButton()
@@ -114,11 +121,18 @@ class FeedCell: UICollectionViewCell {
         return button
     }
     
+    var timelineViewController: TimelineViewController?
+    @objc func animate() {
+        timelineViewController?.animateImageView(statusImageView: statusImageView)
+    }
+    
     func setupView() {
         backgroundColor = .white
         
         addSubview(nameLabel)
         addSubview(profileImageView)
+        profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+        profileImageView.clipsToBounds = true
         addSubview(statusTextView)
         addSubview(statusImageView)
         addSubview(likesCommentsLabel)
@@ -127,21 +141,22 @@ class FeedCell: UICollectionViewCell {
         addSubview(likeButton)
         addSubview(commentButton)
         addSubview(shareButton)
+        addSubview(postMoreButton)
         
+        statusImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(animate)))
         
-        addConstraintsWithFormat(format: "V:|-12-[v0]", views: nameLabel)
-        addConstraintsWithFormat(format: "H:|-8-[v0(44)]-8-[v1]|", views: profileImageView, nameLabel)
+        addConstraintsWithFormat(format: "H:|-8-[v0(44)]-8-[v1]-[v2]-8-|", views: profileImageView, nameLabel, postMoreButton)
         addConstraintsWithFormat(format: "H:|-8-[v0]-8-|", views: statusTextView)
         addConstraintsWithFormat(format: "H:|-8-[v0]-8-|", views: statusImageView)
-        addConstraintsWithFormat(format: "H:|-12-[v0]-8-|", views: likesCommentsLabel)
+        addConstraintsWithFormat(format: "H:[v0]-8-|", views: likesCommentsLabel)
         addConstraintsWithFormat(format: "H:|-8-[v0]-8-|", views: dividerLineView)
         
         addConstraintsWithFormat(format: "H:|[v0(v2)][v1(v2)][v2]|", views: likeButton, commentButton, shareButton)
         
-        
-        addConstraintsWithFormat(format: "V:|-8-[v0(44)]-8-[v1]-8-[v2(250)]-8-[v3(24)]-8-[v4(1)][v5(44)]-2-|", views: profileImageView, statusTextView, statusImageView, likesCommentsLabel,dividerLineView, likeButton)
-        
-        addConstraintsWithFormat(format: "V:[v0(44)]-2-|", views: commentButton)
-        addConstraintsWithFormat(format: "V:[v0(44)]-2-|", views: shareButton)
+        addConstraintsWithFormat(format: "V:|-16-[v0]", views: nameLabel)
+        addConstraintsWithFormat(format: "V:|-12-[v0(44)]-8-[v1]-8-[v2(250)]-8-[v3(24)]-8-[v4(1)][v5(40)]-2-|", views: profileImageView, statusTextView, statusImageView, likesCommentsLabel,dividerLineView, likeButton)
+        addConstraintsWithFormat(format: "V:|-16-[v0]", views: postMoreButton)
+        addConstraintsWithFormat(format: "V:[v0(40)]-2-|", views: commentButton)
+        addConstraintsWithFormat(format: "V:[v0(40)]-2-|", views: shareButton)
     }
 }

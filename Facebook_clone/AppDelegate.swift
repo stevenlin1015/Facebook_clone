@@ -20,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         let tabBarController = BaseTabBarController()
-        tabBarController.tabBar.isTranslucent = false
         window?.rootViewController = tabBarController
         
         
