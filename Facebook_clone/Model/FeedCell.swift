@@ -66,6 +66,7 @@ class FeedCell: UICollectionViewCell {
         let textView = UITextView()
         //textView.text = "Meanwhile, Beast turned to the dark side."
         textView.isScrollEnabled = false
+        textView.isEditable = false
         textView.font = UIFont.systemFont(ofSize: 14)
         return textView
     }()
@@ -73,7 +74,7 @@ class FeedCell: UICollectionViewCell {
     let statusImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "DSC01887")
-        imageView.contentMode = UIView.ContentMode.scaleAspectFit
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         imageView.layer.masksToBounds = true
         imageView.isUserInteractionEnabled = true
         return imageView

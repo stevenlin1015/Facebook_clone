@@ -139,7 +139,7 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
             
             if let keyWindow = UIApplication.shared.keyWindow {
                 keyWindow.addSubview(navBarCoverView)
-                tabBarCoverView.frame = CGRect(x: 0, y: keyWindow.frame.height - 49, width: 1000, height: 49)
+                tabBarCoverView.frame = CGRect(x: 0, y: keyWindow.frame.height - 49, width: 1000, height: 49) //tab bar height = 49 by default
                 tabBarCoverView.backgroundColor = .black
                 tabBarCoverView.alpha = 0
                 keyWindow.addSubview(tabBarCoverView)
