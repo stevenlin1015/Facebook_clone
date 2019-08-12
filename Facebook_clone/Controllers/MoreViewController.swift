@@ -200,6 +200,7 @@ class MoreViewController: UITableViewController {
         let index = indexPath.row
         cell.index = index
         cell.textLabel?.text = moreCells[indexPath.row].labelName
+        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         cell.imageView?.image = UIImage(named: moreCells[indexPath.row].iconImageName!)
         cell.imageView?.contentMode = .scaleAspectFill
         cell.imageView?.layer.cornerRadius = 20
