@@ -101,7 +101,7 @@ class FeedCell: UICollectionViewCell {
         return view
     }()
     
-    //buttons
+    //貼文按鈕（讚、留言、分享）
     let likeButton = FeedCell.setupButton(labelName: "讚", imageName: "timeline_facebook_like_icon50x50_")
     let commentButton = FeedCell.setupButton(labelName: "留言", imageName: "timeline_facebook_comment_icon50x50_")
     let shareButton = FeedCell.setupButton(labelName: "分享", imageName: "timeline_facebook_share_icon50x50_")
